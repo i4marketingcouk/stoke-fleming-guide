@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { SITE } from "@/content/guide";
+import { SITE, STAY_KINDS } from "@/content/guide";
 import { getSql } from "@/lib/db";
 
 export type CommunityEvent = {
@@ -21,6 +21,13 @@ export type StayListing = {
   area: string;
   summary: string;
   website: string;
+  bedrooms: number | null;
+  guests: number | null;
+  seaView: boolean;
+  parking: boolean;
+  wifi: boolean;
+  dogFriendly: boolean;
+  hotTub: boolean;
 };
 
 const emptyToNull = (value: string | undefined) => {
@@ -109,16 +116,45 @@ export const listStays = createServerFn({ method: "GET" }).handler(async () => {
     area: string;
     summary: string;
     website: string;
-  }>`select id, name, kind, area, summary, website from stay_listings order by id desc limit 50`;
-  return rows satisfies StayListing[];
+    bedrooms: number | null;
+    guests: number | null;
+    sea_view: boolean;
+    parking: boolean;
+    wifi: boolean;
+    dog_friendly: boolean;
+    hot_tub: boolean;
+  }>`select id, name, kind, area, summary, website, bedrooms, guests, sea_view, parking, wifi, dog_friendly, hot_tub
+     from stay_listings order by id desc limit 50`;
+  return rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+    kind: row.kind,
+    area: row.area,
+    summary: row.summary,
+    website: row.website,
+    bedrooms: row.bedrooms,
+    guests: row.guests,
+    seaView: Boolean(row.sea_view),
+    parking: Boolean(row.parking),
+    wifi: Boolean(row.wifi),
+    dogFriendly: Boolean(row.dog_friendly),
+    hotTub: Boolean(row.hot_tub),
+  })) satisfies StayListing[];
 });
 
 const stayInput = z.object({
   name: z.string().trim().min(2).max(80),
-  kind: z.string().trim().min(2).max(40),
+  kind: z.enum(STAY_KINDS),
   area: z.string().trim().min(2).max(120),
   summary: z.string().trim().min(20).max(400),
   website: z.string().trim().url().max(200),
+  bedrooms: z.number().int().min(1).max(40),
+  guests: z.number().int().min(1).max(80),
+  seaView: z.boolean(),
+  parking: z.boolean(),
+  wifi: z.boolean(),
+  dogFriendly: z.boolean(),
+  hotTub: z.boolean(),
   companyFax: z.string().max(0).optional(),
 });
 
@@ -127,8 +163,11 @@ export const submitStay = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     if (data.companyFax) return { ok: true as const };
     const sql = await getSql();
-    await sql`insert into stay_listings (name, kind, area, summary, website)
-      values (${data.name}, ${data.kind}, ${data.area}, ${data.summary}, ${data.website})`;
+    await sql`insert into stay_listings (name, kind, area, summary, website, bedrooms, guests, sea_view, parking, wifi, dog_friendly, hot_tub)
+      values (
+        ${data.name}, ${data.kind}, ${data.area}, ${data.summary}, ${data.website},
+        ${data.bedrooms}, ${data.guests}, ${data.seaView}, ${data.parking}, ${data.wifi}, ${data.dogFriendly}, ${data.hotTub}
+      )`;
     return { ok: true as const };
   });
 

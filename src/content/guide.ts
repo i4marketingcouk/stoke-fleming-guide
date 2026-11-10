@@ -384,44 +384,205 @@ export const FOOD: Place[] = [
   },
 ];
 
+export const STAY_KINDS = ["Self catering", "B&B", "Hotel", "Holiday park"] as const;
+
+export type StayKind = (typeof STAY_KINDS)[number];
+
 export type Stay = {
   name: string;
-  kind: string;
+  kind: StayKind;
   area: string;
   summary: string;
   url: string;
   ownerListed: boolean;
+  bedrooms: number;
+  guests: number;
+  seaView: boolean;
+  parking: boolean;
+  wifi: boolean;
+  dogFriendly: boolean;
+  hotTub: boolean;
 };
 
 export const STAYS: Stay[] = [
   {
     name: "Stoke Lodge Hotel",
     kind: "Hotel",
-    area: "On the coast path between the village and Blackpool Sands",
+    area: "Cinders Lane, between the village and Blackpool Sands",
     summary:
-      "A hotel in the parish, with rooms and a restaurant. What is included — parking, a pool, a view — is for the hotel to say. We do not list a made-up nightly price.",
+      "The hotel on the coast path. Their own site says 25 guest rooms, from singles to a sea-view family room, plus two pools and a restaurant. What is free on a given night is for them to say.",
     url: "https://stokelodgehotel.co.uk/",
     ownerListed: false,
+    bedrooms: 25,
+    guests: 25,
+    seaView: true,
+    parking: false,
+    wifi: false,
+    dogFriendly: false,
+    hotTub: false,
   },
   {
-    name: "Channel View",
-    kind: "Guest house",
-    area: "In the village, a short drive from Dartmouth",
+    name: "Channel View Guest House",
+    kind: "B&B",
+    area: "New Road, in the village",
     summary:
-      "A guest house in Stoke Fleming. Rooms and breakfast are on their own site. No star rating is invented here.",
+      "A bed and breakfast in Stoke Fleming. The guest house describes dog-friendly rooms, off-road parking and sea views. Room numbers change — book on their site.",
     url: "https://www.channelviewguesthouse.com/",
     ownerListed: false,
+    bedrooms: 3,
+    guests: 6,
+    seaView: true,
+    parking: true,
+    wifi: true,
+    dogFriendly: true,
+    hotTub: false,
+  },
+  {
+    name: "Fords House",
+    kind: "B&B",
+    area: "Dartmouth Road, in the village",
+    summary:
+      "An 18th-century cottage run as a bed and breakfast, with two en-suite double rooms. Breakfast is included. The price is on their site, not copied here.",
+    url: "https://www.fordshouse.co.uk/",
+    ownerListed: false,
+    bedrooms: 2,
+    guests: 4,
+    seaView: false,
+    parking: false,
+    wifi: false,
+    dogFriendly: false,
+    hotTub: false,
+  },
+  {
+    name: "Fairholme",
+    kind: "B&B",
+    area: "Bay View Estate, Stoke Fleming",
+    summary:
+      "A bed and breakfast with three rooms, and a self-catering apartment out of the main season. The National Trails listing says dogs and Wi-Fi are welcome. Book with Fairholme, not through this guide.",
+    url: "https://www.nationaltrail.co.uk/en_GB/accommodation/fairholme-2/",
+    ownerListed: false,
+    bedrooms: 3,
+    guests: 6,
+    seaView: false,
+    parking: true,
+    wifi: true,
+    dogFriendly: true,
+    hotTub: false,
   },
   {
     name: "The Birdhouses",
-    kind: "Small hide, sleeping two",
-    area: "Above Blackpool Sands. Not a harbour — the village does not have one.",
+    kind: "Self catering",
+    area: "Above Blackpool Sands. Not a harbour.",
     summary:
-      "The well-known hide looking over the beach, let by Wild Comfort. A one-minute claim only makes sense if you are already at the beach, not if you are at the church.",
+      "The hides looking over the beach, let by Wild Comfort. They sleep two. A one-minute walk only makes sense if you are already at the beach, not if you are at the church.",
     url: "https://wildcomfort.co.uk/the-birdhouses/",
     ownerListed: false,
+    bedrooms: 1,
+    guests: 2,
+    seaView: true,
+    parking: false,
+    wifi: false,
+    dogFriendly: false,
+    hotTub: false,
+  },
+  {
+    name: "The Thatched House",
+    kind: "Self catering",
+    area: "In the village",
+    summary:
+      "A thatched cottage sleeping six in three bedrooms, with parking. The host describes sea views and a short walk along the coast path to the beach. Confirm the walk from the listing — it is not the same timing as the walk from the church.",
+    url: "https://www.airbnb.com/rooms/48538120",
+    ownerListed: false,
+    bedrooms: 3,
+    guests: 6,
+    seaView: true,
+    parking: true,
+    wifi: true,
+    dogFriendly: false,
+    hotTub: false,
+  },
+  {
+    name: "Sea View Cottage",
+    kind: "Self catering",
+    area: "In the village, on the coast-path side",
+    summary:
+      "A two-bedroom cottage sleeping four. The listing says there is parking, a sea-view patio, and that one dog is welcome. The host puts Blackpool Sands at about 15 minutes from this door.",
+    url: "https://www.airbnb.com/rooms/902608437858957301",
+    ownerListed: false,
+    bedrooms: 2,
+    guests: 4,
+    seaView: true,
+    parking: true,
+    wifi: true,
+    dogFriendly: true,
+    hotTub: false,
+  },
+  {
+    name: "The Old Granary",
+    kind: "Self catering",
+    area: "In the village",
+    summary:
+      "A converted barn sleeping five in three bedrooms, with parking for two cars, Wi-Fi and room for two pets. The owner takes the booking.",
+    url: "https://theoldgranarybarn.weebly.com/",
+    ownerListed: false,
+    bedrooms: 3,
+    guests: 5,
+    seaView: false,
+    parking: true,
+    wifi: true,
+    dogFriendly: true,
+    hotTub: false,
+  },
+  {
+    name: "Broome Cottage",
+    kind: "Self catering",
+    area: "In the village",
+    summary:
+      "A character cottage sleeping six in three bedrooms, with Wi-Fi and a garden. Pets are not accepted. Parking is for unloading; longer stays use village spaces.",
+    url: "https://beachstays.co.uk/properties/broome-cottage/",
+    ownerListed: false,
+    bedrooms: 3,
+    guests: 6,
+    seaView: false,
+    parking: false,
+    wifi: true,
+    dogFriendly: false,
+    hotTub: false,
+  },
+  {
+    name: "Alice Cottage",
+    kind: "Self catering",
+    area: "A lane above Blackpool Sands",
+    summary:
+      "A three-bedroom cottage sleeping six, booked through Toad Hall. Parking for two cars, Wi-Fi, and pets are accepted. It is a walk down the lane to the beach, not a harbour stay.",
+    url: "https://www.toadhallcottages.co.uk/holiday-cottages/alice-cottage/505",
+    ownerListed: false,
+    bedrooms: 3,
+    guests: 6,
+    seaView: false,
+    parking: true,
+    wifi: true,
+    dogFriendly: true,
+    hotTub: false,
+  },
+  {
+    name: "Leonards Cove Holiday Village",
+    kind: "Holiday park",
+    area: "Leonards Cove, on the cliffs in the parish",
+    summary:
+      "A holiday park with lodges, cottages and a camping field, many of them with a sea view. Some lodges have a hot tub and some take a dog. Tent pitches do not take pets. The park publishes what is actually free.",
+    url: "https://www.leonardscove.co.uk/",
+    ownerListed: false,
+    bedrooms: 5,
+    guests: 10,
+    seaView: true,
+    parking: true,
+    wifi: true,
+    dogFriendly: true,
+    hotTub: true,
   },
 ];
+
 
 export const FIXTURES = [
   {
