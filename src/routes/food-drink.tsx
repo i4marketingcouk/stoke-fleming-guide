@@ -22,13 +22,13 @@ function FoodPage() {
       </p>
       <div className="mt-8 space-y-8">
         {FOOD.map((place) => (
-          <article key={place.name} className="grid gap-6 border border-line p-4 sm:grid-cols-[220px_1fr] sm:p-0">
+          <article key={place.name} className="grid gap-6 overflow-hidden rounded-2xl bg-paper shadow-lg sm:grid-cols-[240px_1fr]">
             {place.image ? (
               <img src={place.image} alt={place.imageAlt} width={place.width} height={place.height} className="h-full w-full object-cover" loading="lazy" />
             ) : (
               <div className="flex min-h-40 items-end bg-foam p-4 font-display text-2xl text-sea-deep">{place.kind}</div>
             )}
-            <div className="sm:py-5 sm:pr-5">
+            <div className="p-5 sm:py-6 sm:pr-6">
               <p className="text-sm font-semibold uppercase tracking-wide text-sea">{place.kind}</p>
               <h2 className="text-3xl">{place.name}</h2>
               <p className="mt-2 text-muted">{place.where}</p>

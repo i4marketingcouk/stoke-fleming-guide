@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Source Sans 3", "Segoe UI", sans-serif;
-  --font-display: "Fraunces", Georgia, serif;
-  --color-paper: #f3efe6;
-  --color-ink: #1c2826;
-  --color-sea: #0e5c62;
-  --color-sea-deep: #083e42;
-  --color-foam: #e5f1f0;
-  --color-sand: #e4d3ba;
-  --color-line: #d5cbbd;
-  --color-muted: #4e5a55;
+  --font-sans: "Inter", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #ffffff;
+  --color-ink: #393737;
+  --color-sea: #0f7f85;
+  --color-sea-deep: #0b5c60;
+  --color-foam: #f0f9fa;
+  --color-sand: #d9f2f4;
+  --color-line: #e5e7eb;
+  --color-muted: #4b5563;
+  --color-night: #262626;
 }
 
 @layer base {
@@ -26,6 +27,7 @@
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
+    font-weight: 700;
     line-height: 1.15;
     letter-spacing: -0.02em;
   }
@@ -33,14 +35,28 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+  button,
+  a[class*="bg-sea"] {
+    border-radius: 9999px;
+  }
   :focus-visible {
     outline: 2px solid var(--color-sea);
     outline-offset: 3px;
   }
 }
 
+@keyframes hero-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+
+.hero-drift {
+  animation: hero-drift 28s ease-in-out alternate infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .hero-drift { animation: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

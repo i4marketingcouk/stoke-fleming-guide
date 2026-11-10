@@ -22,8 +22,8 @@ function BeachesPage() {
       </p>
       <div className="mt-8 space-y-10">
         {BEACHES.map((beach) => (
-          <article key={beach.slug} className="grid items-start gap-6 border-b border-line pb-10 lg:grid-cols-2">
-            <img src={beach.image} alt={beach.imageAlt} width={beach.width} height={beach.height} className="w-full object-cover" loading="lazy" />
+          <article key={beach.slug} className="grid items-center gap-8 lg:grid-cols-2">
+            <img src={beach.image} alt={beach.imageAlt} width={beach.width} height={beach.height} className="aspect-3/2 w-full rounded-2xl object-cover shadow-lg" loading="lazy" />
             <div>
               <h2 className="text-3xl">{beach.name}</h2>
               <p className="mt-3">{beach.summary}</p>

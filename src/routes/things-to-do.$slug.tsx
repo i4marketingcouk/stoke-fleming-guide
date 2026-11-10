@@ -36,7 +36,7 @@ function ActivityPage() {
       <h1 className="mt-2 text-4xl sm:text-5xl">{activity.title}</h1>
       <p className="mt-4 text-lg">{activity.summary}</p>
       <figure className="mt-6">
-        <img src={activity.image} alt={activity.imageAlt} width={activity.width} height={activity.height} className="w-full object-cover" />
+        <img src={activity.image} alt={activity.imageAlt} width={activity.width} height={activity.height} className="aspect-3/2 w-full rounded-2xl object-cover shadow-lg" />
         {activity.credit ? <figcaption className="mt-2 text-sm text-muted">{activity.credit}</figcaption> : null}
       </figure>
       <dl className="mt-8 space-y-4">

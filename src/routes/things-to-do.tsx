@@ -20,9 +20,9 @@ function ThingsPage() {
       <p className="mt-4 max-w-3xl text-lg text-muted">
         Eight things you can actually follow up. Boat trips and fishing leave from Dartmouth, so they are not listed as if they start in the village. There is no photography tour with no photographer.
       </p>
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
+      <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {ACTIVITIES.map((item) => (
-          <article key={item.slug} className="border border-line">
+          <article key={item.slug} className="overflow-hidden rounded-2xl bg-paper shadow-lg">
             <img src={item.image} alt={item.imageAlt} width={item.width} height={item.height} className="aspect-3/2 w-full object-cover" loading="lazy" />
             <div className="p-5">
               <h2 className="text-2xl">{item.title}</h2>

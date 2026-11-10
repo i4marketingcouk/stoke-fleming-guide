@@ -39,7 +39,7 @@ function StayPage() {
 
 function StayCard(stay: { name: string; kind: string; area: string; summary: string; website: string; ownerListed: boolean }) {
   return (
-    <article className="border border-line p-5">
+    <article className="overflow-hidden rounded-2xl bg-paper p-6 shadow-lg">
       <p className="text-sm font-semibold uppercase tracking-wide text-sea">{stay.kind}</p>
       <h2 className="text-3xl">{stay.name}</h2>
       <p className="text-muted">{stay.area}</p>
