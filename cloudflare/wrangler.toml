@@ -1,0 +1,11 @@
+name = "stoke-fleming-guide"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "stoke-fleming"
+database_id = "c23ff9d2-5018-4051-ad63-bb238420c3c1"
+
+[triggers]
+crons = ["0 8 1 * *"]
