@@ -31,7 +31,7 @@ export function composeNewsletter(events: CommunityEvent[], month = currentMonth
   lines.push(
     "",
     "Tides are not calculated in this email. Use a Dartmouth tide table before you swim.",
-    "To stop these notes, use the unsubscribe link on the live edition. This preview does not store your address on the server.",
+    "You asked for this monthly note. Reply to the sending address to stop.",
   );
   return lines.join("\n");
 }

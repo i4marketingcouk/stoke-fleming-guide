@@ -12,7 +12,7 @@ export function pageMeta(opts: {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }) {
   const url = canonical(opts.path);
-  const image = `${SITE.origin}/photos/blackpool-sands.jpg`;
+  const image = `${SITE.origin}/og.jpg`;
   const scripts = opts.jsonLd
     ? [
         {

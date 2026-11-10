@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { listEvents, listNewsletterMonths, saveNewsletterDraft } from "@/lib/community.functions";
+import { SITE } from "@/content/guide";
 import { composeNewsletter, currentMonthKey } from "@/lib/newsletter";
 import { pageMeta } from "@/lib/seo";
-
-const LOCAL_KEY = "stokeFlemingNewsletter";
 
 export const Route = createFileRoute("/newsletter")({
   loader: async () => {
@@ -15,7 +14,7 @@ export const Route = createFileRoute("/newsletter")({
     pageMeta({
       title: "Monthly newsletter | Stoke Fleming Guide",
       description:
-        "A monthly note of village events, fixtures and food hours. The preview shows the edition. Addresses are not stored on the public site until the mail worker is connected.",
+        "A monthly note of village events, fixtures and food hours. Your address is kept on the private mail list, not on the public pages. The edition itself is shown below.",
       path: "/newsletter",
     }),
   component: NewsletterPage,
@@ -51,22 +50,14 @@ function NewsletterPage() {
           }
           setPending(true);
           try {
-            const endpoint = import.meta.env.VITE_NEWSLETTER_ENDPOINT as string | undefined;
-            if (endpoint) {
-              const response = await fetch(endpoint, {
-                method: "POST",
-                headers: { "content-type": "application/json" },
-                body: JSON.stringify({ email, consent: true }),
-              });
-              if (!response.ok) throw new Error("subscribe");
-              setStatus("You are on the list. The next edition goes on the first of the month.");
-            } else {
-              const existing = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]") as string[];
-              const next = Array.from(new Set([...existing, email]));
-              localStorage.setItem(LOCAL_KEY, JSON.stringify(next));
-              await saveNewsletterDraft({ data: { month, body: draft } });
-              setStatus("Saved in this browser, and this month’s draft is stored without your address. Live sending starts when the Cloudflare mail worker is connected — your address is not in the public database.");
-            }
+            const response = await fetch(SITE.newsletterEndpoint, {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ email, consent: true }),
+            });
+            if (!response.ok) throw new Error("subscribe");
+            await saveNewsletterDraft({ data: { month, body: draft } });
+            setStatus("You are on the monthly list. The edition is prepared on the first morning. Emails go out once a sending address is connected.");
             event.currentTarget.reset();
             setConsent(false);
           } catch {
@@ -82,7 +73,7 @@ function NewsletterPage() {
         </label>
         <label className="flex items-start gap-3">
           <input type="checkbox" className="mt-1 h-5 w-5" checked={consent} onChange={(event) => setConsent(event.target.checked)} />
-          <span>Send me one email a month about Stoke Fleming events and practical changes. I can stop by replying, or by clearing this browser if I only joined the preview.</span>
+          <span>Send me one email a month about Stoke Fleming events and practical changes. I can stop by replying to a sent edition. My address stays off the public pages.</span>
         </label>
         <button type="submit" disabled={pending} className="min-h-11 bg-sea px-4 font-semibold text-paper disabled:opacity-60">
           {pending ? "Saving…" : "Join the monthly note"}

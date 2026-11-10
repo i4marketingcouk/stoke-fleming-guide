@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { SITE } from "@/content/guide";
 import { getSql } from "@/lib/db";
 
 export type CommunityEvent = {
@@ -83,6 +84,19 @@ export const submitEvent = createServerFn({ method: "POST" })
     const sql = await getSql();
     await sql`insert into community_events (title, starts_on, start_time, place, summary, organiser, website)
       values (${data.title}, ${data.startsOn}, ${emptyToNull(data.startTime)}, ${data.place}, ${data.summary}, ${data.organiser}, ${emptyToNull(data.website)})`;
+    await fetch(SITE.eventsEndpoint, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        title: data.title,
+        startsOn: data.startsOn,
+        startTime: data.startTime,
+        place: data.place,
+        summary: data.summary,
+        organiser: data.organiser,
+        website: data.website,
+      }),
+    }).catch(() => undefined);
     return { ok: true as const };
   });
 

@@ -5,6 +5,8 @@ export const SITE = {
   lon: -3.6,
   description:
     "An independent guide to Stoke Fleming, the village above Start Bay in South Devon. Beaches, the coast path, food, buses and village life — not an official tourist board.",
+  newsletterEndpoint: "https://stoke-fleming-guide.i4marketingcouk.workers.dev/subscribe",
+  eventsEndpoint: "https://stoke-fleming-guide.i4marketingcouk.workers.dev/events",
 } as const;
 
 export const NAV = [

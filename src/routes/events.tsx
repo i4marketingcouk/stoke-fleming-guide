@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { FIXTURES } from "@/content/guide";
 import { listEvents, submitEvent } from "@/lib/community.functions";
@@ -68,6 +68,7 @@ function EventsPage() {
 }
 
 function EventForm() {
+  const router = useRouter();
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
   return (
@@ -93,8 +94,9 @@ function EventForm() {
           });
           if (!result.ok) setMessage(result.error);
           else {
-            setMessage("Published. Refresh the page to see it on the list.");
+            setMessage("Published. It is on the list now, and marked as unchecked.");
             event.currentTarget.reset();
+            await router.invalidate();
           }
         } catch {
           setMessage("Check the date and the description. Do not put a phone number in the form — it is not asked for, and it would be public.");

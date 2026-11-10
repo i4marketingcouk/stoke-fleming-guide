@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SITE } from "@/content/guide";
+import { getWeather } from "@/lib/weather.functions";
 
 type Weather = {
   temperature: number;
@@ -7,52 +7,24 @@ type Weather = {
   summary: string;
 };
 
-const CODES: Record<number, string> = {
-  0: "Clear",
-  1: "Mainly clear",
-  2: "Partly cloudy",
-  3: "Overcast",
-  45: "Fog",
-  48: "Fog",
-  51: "Light drizzle",
-  53: "Drizzle",
-  55: "Heavy drizzle",
-  61: "Light rain",
-  63: "Rain",
-  65: "Heavy rain",
-  71: "Light snow",
-  80: "Showers",
-  81: "Showers",
-  82: "Heavy showers",
-  95: "Thunderstorm",
-};
-
 export function ConditionsPanel() {
   const [weather, setWeather] = useState<Weather | null>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${SITE.lat}&longitude=${SITE.lon}&current=temperature_2m,weather_code,wind_speed_10m&timezone=Europe%2FLondon`;
-    fetch(url, { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) throw new Error("weather");
-        return response.json();
+    let cancelled = false;
+    getWeather()
+      .then((result) => {
+        if (cancelled) return;
+        if (!result) setFailed(true);
+        else setWeather(result);
       })
-      .then((data: { current?: { temperature_2m?: number; weather_code?: number; wind_speed_10m?: number } }) => {
-        const current = data.current;
-        if (!current || typeof current.temperature_2m !== "number") throw new Error("shape");
-        setWeather({
-          temperature: Math.round(current.temperature_2m),
-          wind: Math.round(current.wind_speed_10m ?? 0),
-          summary: CODES[current.weather_code ?? -1] ?? "Weather available",
-        });
-      })
-      .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        setFailed(true);
+      .catch(() => {
+        if (!cancelled) setFailed(true);
       });
-    return () => controller.abort();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
