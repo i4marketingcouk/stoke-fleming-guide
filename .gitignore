@@ -8,3 +8,5 @@ artifacts
 .nitro
 .tanstack
 .cache
+.grok/preview.pid
+.grok/preview.log
